@@ -26,7 +26,7 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  update(@Param('id') id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
     return this.client.send('updateCategory', { id, updateCategoryDto })
       .pipe(
         catchError(error => { throw new RpcException(error) })
