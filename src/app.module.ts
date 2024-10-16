@@ -4,8 +4,9 @@ import { NatsModule } from './transports/nats.module';
 import { ProductsModule } from './products/products.module';
 import { BrandsModule } from './brands/brands.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ProvidersModule } from './providers/providers.module';
 
 @Module({
-  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule ],
+  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule ],
 })
 export class AppModule {}
