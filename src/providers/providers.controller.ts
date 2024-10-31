@@ -1,11 +1,12 @@
 import { catchError } from 'rxjs';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, Query } from '@nestjs/common';
 
 import { NATS_SERVICE } from 'src/config';
 
 import { UpdateProviderDto } from './dto/update-provider.dto';
 import { CreateProviderDto } from './dto/create-provider.dto';
+import { PaginationDto } from 'src/common';
 
 @Controller('providers')
 export class ProvidersController {
@@ -22,8 +23,8 @@ export class ProvidersController {
   }
 
   @Get()
-  findAll() {
-    return this.client.send("findAllProviders", {}).pipe(
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.client.send("findAllProviders",paginationDto).pipe(
       catchError(error => { throw new RpcException(error) })
     )
   }
