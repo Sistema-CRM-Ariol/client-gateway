@@ -14,6 +14,14 @@ export class ProvidersController {
     @Inject(NATS_SERVICE) private readonly client: ClientProxy
   ) { }
 
+  @Get('seed')
+  seed() {
+    return this.client.send("seedProviders", {})
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
+  }
+
   @Post()
   create(@Body() createProviderDto: CreateProviderDto) {
     return this.client.send("createProvider", createProviderDto)
