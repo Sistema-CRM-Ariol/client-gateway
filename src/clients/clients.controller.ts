@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { catchError, firstValueFrom } from 'rxjs';
 import { PaginationDto } from 'src/common';
 import { NATS_SERVICE } from 'src/config';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -19,7 +19,7 @@ export class ClientsController {
 
   @Post()
   create(@Body() createClientDto: CreateClientDto) {
-    return this.clientsClient.send('createClient', createClientDto );
+    return this.clientsClient.send('createClient', createClientDto);
   }
 
   @Get()
@@ -28,18 +28,11 @@ export class ClientsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    try {
-      const product = await firstValueFrom(
-        this.clientsClient.send('find_one_client', { id })
-      );
-
-      return product;
-
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
-
+  async findOne(@Param('id') id: string) {
+    return this.clientsClient.send('findOneClient', id)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
   }
 
   @Delete(':id')
