@@ -19,7 +19,7 @@ async function bootstrap() {
       transform: true,
     })
   );
-
+  app.enableCors();
   app.useGlobalFilters( new RpcCustomExceptionFilter())
 
   await app.listen(envs.port);

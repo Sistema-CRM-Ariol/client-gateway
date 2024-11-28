@@ -19,12 +19,18 @@ export class ClientsController {
 
   @Post()
   create(@Body() createClientDto: CreateClientDto) {
-    return this.clientsClient.send('createClient', createClientDto);
+    return this.clientsClient.send('createClient', createClientDto)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      );
   }
 
   @Get()
   findAllClients(@Query() paginationDto: PaginationDto) {
-    return this.clientsClient.send('findAllClients', paginationDto);
+    return this.clientsClient.send('findAllClients', paginationDto)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      );
   }
 
   @Get(':id')
@@ -43,11 +49,9 @@ export class ClientsController {
   @Patch(':id')
   udpateProduct(@Body() updateClientDto: UpdateClientDto, @Param('id') id: string,
   ) {
-    try {
-      return this.clientsClient.send('updateClient', { id, updateClientDto })
-    } catch (error) {
-      console.log(error);
-      throw new BadRequestException(error);
-    }
+    return this.clientsClient.send('updateClient', { id, updateClientDto })
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      );
   }
 }
