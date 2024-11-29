@@ -35,4 +35,9 @@ export class BrandsController {
   remove(@Param('id') id: string) {
     return this.client.send('removeBrand', id);
   }
+
+  @Get('seed')
+  seed() {
+    return this.client.send('seedBrands', {});
+  }
 }

@@ -10,7 +10,7 @@ import { PaginationDto } from 'src/common';
 export class CategoriesController {
   constructor(
     @Inject(NATS_SERVICE) private readonly client: ClientProxy
-  ) {}
+  ) { }
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -22,7 +22,10 @@ export class CategoriesController {
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.client.send('findAllCategories', paginationDto);
+    return this.client.send('findAllCategories', paginationDto)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
   }
 
   @Patch(':id')
@@ -39,5 +42,10 @@ export class CategoriesController {
       .pipe(
         catchError(error => { throw new RpcException(error) })
       );
+  }
+
+  @Get('seed')
+  seed() {
+    return this.client.send('seedCategories', {});
   }
 }
