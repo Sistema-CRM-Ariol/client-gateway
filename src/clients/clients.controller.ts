@@ -1,10 +1,17 @@
-import { BadRequestException, Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Inject, Param, ParseEnumPipe, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { PaginationDto } from 'src/common';
 import { NATS_SERVICE } from 'src/config';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+
+export enum Period {
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly',
+}
 
 @Controller("clients")
 export class ClientsController {
@@ -15,6 +22,13 @@ export class ClientsController {
   @Get('seed')
   seed() {
     return this.clientsClient.send('seedClient', {});
+  }
+
+  @Get('statistics/:period')
+  getStatst(
+    @Param('period', new ParseEnumPipe(Period)) period: string
+  ) {
+    return this.clientsClient.send('clientsStadistics', period);
   }
 
   @Post()
