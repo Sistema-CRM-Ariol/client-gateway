@@ -24,11 +24,9 @@ export class ClientsController {
     return this.clientsClient.send('seedClient', {});
   }
 
-  @Get('statistics/:period')
-  getStatst(
-    @Param('period', new ParseEnumPipe(Period)) period: string
-  ) {
-    return this.clientsClient.send('clientsStadistics', period);
+  @Get('stadistics')
+  getStatst() {
+    return this.clientsClient.send('clientsStadistics', {});
   }
 
   @Post()
