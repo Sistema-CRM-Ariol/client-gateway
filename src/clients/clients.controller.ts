@@ -5,6 +5,7 @@ import { PaginationDto } from 'src/common';
 import { NATS_SERVICE } from 'src/config';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 
 export enum Period {
   DAILY = 'daily',
@@ -38,8 +39,8 @@ export class ClientsController {
   }
 
   @Get()
-  findAllClients(@Query() paginationDto: PaginationDto) {
-    return this.clientsClient.send('findAllClients', paginationDto)
+  findAllClients(@Query() filterPaginationDto: FilterPaginationDto) {
+    return this.clientsClient.send('findAllClients', filterPaginationDto)
       .pipe(
         catchError(error => { throw new RpcException(error) })
       );
