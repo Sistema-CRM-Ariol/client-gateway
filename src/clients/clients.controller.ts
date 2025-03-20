@@ -1,18 +1,12 @@
-import { BadRequestException, Body, Controller, Delete, Get, Inject, Param, ParseEnumPipe, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { catchError, firstValueFrom } from 'rxjs';
-import { PaginationDto } from 'src/common';
+import { catchError } from 'rxjs';
+
 import { NATS_SERVICE } from 'src/config';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 
-export enum Period {
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  YEARLY = 'yearly',
-}
 
 @Controller("clients")
 export class ClientsController {
@@ -25,11 +19,6 @@ export class ClientsController {
     return this.clientsClient.send('seedClient', {});
   }
 
-  @Get('stadistics')
-  getStatst() {
-    return this.clientsClient.send('clientsStadistics', {});
-  }
-
   @Post()
   create(@Body() createClientDto: CreateClientDto) {
     return this.clientsClient.send('createClient', createClientDto)
@@ -39,10 +28,12 @@ export class ClientsController {
   }
 
   @Get()
-  findAllClients(@Query() filterPaginationDto: FilterPaginationDto) {
+  findAl(@Query() filterPaginationDto: FilterPaginationDto) {
     return this.clientsClient.send('findAllClients', filterPaginationDto)
       .pipe(
-        catchError(error => { throw new RpcException(error) })
+        catchError(error => { 
+          throw new RpcException(error) 
+        })
       );
   }
 
@@ -54,13 +45,8 @@ export class ClientsController {
       )
   }
 
-  @Delete(':id')
-  deleteProduct(@Param('id') id: string) {
-    return this.clientsClient.send('removeClient', id)
-  }
-
   @Patch(':id')
-  udpateProduct(@Body() updateClientDto: UpdateClientDto, @Param('id') id: string,
+  udpate(@Body() updateClientDto: UpdateClientDto, @Param('id') id: string,
   ) {
     return this.clientsClient.send('updateClient', { id, updateClientDto })
       .pipe(
