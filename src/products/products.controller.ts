@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Inject, Query } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { NATS_SERVICE } from 'src/config';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { PaginationDto } from 'src/common';
 import { catchError } from 'rxjs';
+import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -30,8 +30,8 @@ export class ProductsController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.client.send("findAllProducts", paginationDto);
+  findAll(@Query() filterPaginationDto: FilterPaginationDto) {
+    return this.client.send("findAllProducts", filterPaginationDto);
   }
 
   @Get(':id')
@@ -43,11 +43,4 @@ export class ProductsController {
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.client.send("updateProduct", { id, updateProductDto });
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.client.send("removeProduct", id);
-  }
-
-
 }
