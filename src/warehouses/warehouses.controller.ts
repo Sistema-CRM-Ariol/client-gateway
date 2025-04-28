@@ -32,6 +32,14 @@ export class WarehousesController {
       )
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.client.send("findOneWarehouse", id)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateWarehouseDto: UpdateWarehouseDto) {
     return this.client.send("updateWarehouse", { id, updateWarehouseDto })

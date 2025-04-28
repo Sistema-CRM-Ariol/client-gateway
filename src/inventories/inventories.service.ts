@@ -30,11 +30,11 @@ export class InventoriesService {
       const created = await firstValueFrom(
         this.client.send('createInventory', dto)
       );
-      
+
       this.gateway.server.emit('inventoryCreated', created);
-      
+
       return created;
-      
+
     } catch (error) {
       throw error;
     }
@@ -44,7 +44,7 @@ export class InventoriesService {
     const updated = await firstValueFrom(
       this.client.send('updateInventory', { id, updateInventoryDto })
     );
-    
+
     this.gateway.server.emit('inventoryUpdated', updated);
     return updated;
   }
@@ -53,5 +53,12 @@ export class InventoriesService {
     const deleted = await firstValueFrom(this.client.send('removeInventory', id));
     this.gateway.server.emit('inventoryDeleted', { id });
     return deleted;
+  }
+
+  async searchItems(warehouseId: string) {
+    const items = await firstValueFrom(
+      this.client.send('searchInventory', warehouseId)
+    );
+    return items;
   }
 }

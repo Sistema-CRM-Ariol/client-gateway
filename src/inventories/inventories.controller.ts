@@ -27,4 +27,9 @@ export class InventoriesController {
   remove(@Param('id') id: number) {
     return this.inventoriesService.remove(+id);
   }
+
+  @Get('search/:warehouseId')
+  search(@Param('warehouseId') warehouseId: string) {
+    return this.inventoriesService.searchItems(warehouseId);
+  }
 }
