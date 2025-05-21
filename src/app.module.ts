@@ -9,8 +9,10 @@ import { CompaniesModule } from './companies/companies.module';
 import { CategoriesModule } from './categories/categories.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { InventoriesModule } from './inventories/inventories.module';
+import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
-  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule ],
+  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule ],
 })
 export class AppModule {}

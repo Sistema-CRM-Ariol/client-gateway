@@ -25,8 +25,8 @@ COPY . .
 # RUN npm run test
 RUN npm run build
 
-RUN npm ci -f --only=production && npm cache clean --force
-
+# RUN npm ci -f --only=production && npm cache clean --force
+RUN npm prune --production
 
 
 # Crear la imagen final de Docker
