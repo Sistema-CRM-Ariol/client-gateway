@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 
 
@@ -25,8 +25,8 @@ COPY . .
 # RUN npm run test
 RUN npm run build
 
-# RUN npm ci -f --only=production && npm cache clean --force
-RUN npm prune --production
+RUN npm ci -f --only=production && npm cache clean --force
+# RUN npm prune --production
 
 
 # Crear la imagen final de Docker
