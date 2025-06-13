@@ -39,7 +39,7 @@ export class ProvidersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.client.send("findOneProvider", +id)
+    return this.client.send("findOneProvider", id)
       .pipe(
         catchError(error => { throw new RpcException(error) })
       )
@@ -47,15 +47,7 @@ export class ProvidersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProviderDto: UpdateProviderDto) {
-    return this.client.send("updateProvider", { id: +id, updateProviderDto })
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      )
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.client.send("removeProvider", +id)
+    return this.client.send("updateProvider", { id, updateProviderDto })
       .pipe(
         catchError(error => { throw new RpcException(error) })
       )
