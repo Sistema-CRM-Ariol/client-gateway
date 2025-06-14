@@ -11,8 +11,9 @@ import { WarehousesModule } from './warehouses/warehouses.module';
 import { InventoriesModule } from './inventories/inventories.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
+import { ImportsModule } from './imports/imports.module';
 
 @Module({
-  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule ],
+  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule, ImportsModule],
 })
-export class AppModule {}
+export class AppModule { }
