@@ -24,9 +24,6 @@ export class CreateProductDto {
     priceSale: number;
     
     @IsString()
-    providerId?: string;
-    
-    @IsString()
     serialNumber: string;
     
     @IsOptional()
