@@ -1,5 +1,5 @@
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { Controller, Get, Post, Body, Inject, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Inject, Query, Patch, Param } from '@nestjs/common';
 import { catchError } from 'rxjs';
 import { CreateImportDto } from './dto/create-import.dto';
 import { NATS_SERVICE } from 'src/config';
@@ -20,9 +20,26 @@ export class ImportsController {
       )
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.client.send("findOneImport", id)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
+  }
+
+
   @Post()
   create(@Body() createImportDto: CreateImportDto) {
     return this.client.send("createImport", createImportDto)
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateImportDto: any) {
+    return this.client.send("updateImport", {id, updateImportDto})
       .pipe(
         catchError(error => { throw new RpcException(error) })
       )

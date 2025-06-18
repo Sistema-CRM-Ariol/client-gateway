@@ -3,4 +3,6 @@ import { CreateImportDto } from './create-import.dto';
 
 export class UpdateImportDto extends PartialType(CreateImportDto) {
   id: string;
+  providerId?: string;
+  warehouseId?: string;
 }
