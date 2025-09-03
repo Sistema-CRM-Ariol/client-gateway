@@ -4,7 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { NATS_SERVICE } from 'src/config';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
-import { PaginationDto } from 'src/common';
+import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -21,8 +21,8 @@ export class CategoriesController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.client.send('findAllCategories', paginationDto)
+  findAll(@Query() filterPaginationDto: FilterPaginationDto) {
+    return this.client.send('findAllCategories', filterPaginationDto)
       .pipe(
         catchError(error => { throw new RpcException(error) })
       )

@@ -12,8 +12,9 @@ import { InventoriesModule } from './inventories/inventories.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { ImportsModule } from './imports/imports.module';
+import { ExportsModule } from './exports/exports.module';
 
 @Module({
-  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule, ImportsModule],
+  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule, ImportsModule, ExportsModule],
 })
 export class AppModule { }
