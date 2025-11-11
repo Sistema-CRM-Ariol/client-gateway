@@ -13,8 +13,9 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { ImportsModule } from './imports/imports.module';
 import { ExportsModule } from './exports/exports.module';
+import { LeadsModule } from './leads/leads.module';
 
 @Module({
-  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule, ImportsModule, ExportsModule],
+  imports: [ClientsModule, NatsModule, ProductsModule, BrandsModule, CategoriesModule, ProvidersModule, AuthModule, CompaniesModule, WarehousesModule, InventoriesModule, UsersModule, RolesModule, ImportsModule, ExportsModule, LeadsModule],
 })
 export class AppModule { }

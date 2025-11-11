@@ -19,7 +19,7 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
         ){
             const status = rpcError.status;
             return response.status(status).json({
-                message: rpcError.message
+                ...rpcError
             });
         }
 
