@@ -1,40 +1,54 @@
-import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class CreateClientDto {
-    @IsString({ message: "El nombre es requerido" })
-    name:        string;
+    @IsString()
+    name: string;
 
-    @IsString({ message: "Debe asignar un cargo" })
-    position:    string;
-    
-    @IsString({ message: "Debe agregar un departamento" })
-    departament: string;
+    @IsString()
+    lastname?: string;
 
-    @IsString({ message: "Agregue la provincia" })
-    province:    string;
-
-    @IsString({ message: "Agregue la direccion" })
-    address:     string;
-
-    @IsString({ message: "Debe asignar un nombre para la factura" })
-    invoice:     string;
-
-    @IsString({ message: "Debe agregar un NIT" })
-    nit:         string;
-
-    @IsString({ each: true })
     @IsOptional()
-    emails?:      string[];
+    @IsString()
+    companyName?: string | null;
 
-    @IsString({ each: true })
     @IsOptional()
-    phones?:      string[];
+    @IsString()
+    position?: string | null;
 
-    @IsString({ message: "Debe asigar una empresa" })
+    @IsString()
+    city: string;
+
+    @IsString()
     @IsOptional()
-    companyId?: string | never;
+    address: string | null;
+
+    @IsOptional()
+    @IsString()
+    razonSocial?: string | null;
+
+    @IsOptional()
+    @IsString()
+    nit?: string | null;
+
+    @IsEmail()
+    email1: string;
+
+    @IsOptional()
+    @IsEmail()
+    email2?: string | null;
+
+    @IsString()
+    phone1: string;
+
+    @IsOptional()
+    @IsString()
+    phone2?: string | null;
+
+    @IsOptional()
+    @IsString()
+    notes?: string;
 
     @IsBoolean()
     @IsOptional()
-    isActive?: boolean | undefined;
+    isActive: boolean;
 }

@@ -10,47 +10,53 @@ import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 
 @Controller("clients")
 export class ClientsController {
-  constructor(
-    @Inject(NATS_SERVICE) private readonly clientsClient: ClientProxy
-  ) { }
+    constructor(
+        @Inject(NATS_SERVICE) private readonly clientsClient: ClientProxy
+    ) { }
 
-  @Get('seed')
-  seed() {
-    return this.clientsClient.send('seedClient', {});
-  }
+    @Get('seed')
+    seed() {
+        return this.clientsClient.send('seedClient', {});
+    }
 
-  @Post()
-  create(@Body() createClientDto: CreateClientDto) {
-    return this.clientsClient.send('createClient', createClientDto)
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      );
-  }
+    @Get('stats')
+    stats() {
+        return this.clientsClient.send('clients.stats', {});
+    }
 
-  @Get()
-  findAl(@Query() filterPaginationDto: FilterPaginationDto) {
-    return this.clientsClient.send('findAllClients', filterPaginationDto)
-      .pipe(
-        catchError(error => { 
-          throw new RpcException(error) 
-        })
-      );
-  }
+    @Post()
+    create(@Body() createClientDto: CreateClientDto) {
+        console.log(createClientDto);
+        return this.clientsClient.send('createClient', createClientDto)
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
+    }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.clientsClient.send('findOneClient', id)
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      )
-  }
+    @Get()
+    findAl(@Query() filterPaginationDto: FilterPaginationDto) {
+        return this.clientsClient.send('findAllClients', filterPaginationDto)
+            .pipe(
+                catchError(error => {
+                    throw new RpcException(error)
+                })
+            );
+    }
 
-  @Patch(':id')
-  udpate(@Body() updateClientDto: UpdateClientDto, @Param('id') id: string,
-  ) {
-    return this.clientsClient.send('updateClient', { id, updateClientDto })
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      );
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: string) {
+        return this.clientsClient.send('findOneClient', id)
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
+    @Patch(':id')
+    udpate(@Body() updateClientDto: UpdateClientDto, @Param('id') id: string,
+    ) {
+        return this.clientsClient.send('updateClient', { id, updateClientDto })
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
+    }
 }
