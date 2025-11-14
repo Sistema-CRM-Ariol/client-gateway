@@ -7,41 +7,43 @@ import { AuthGuard } from './guards/auth.guard';
 import { User } from './decorators/user.decorator';
 import { CurrentUser } from './interfaces/current-user.interface';
 import { Token } from './decorators/token.decorator';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    @Inject(NATS_SERVICE) private readonly client: ClientProxy
-  ) { }
+    constructor(
+        @Inject(NATS_SERVICE) private readonly client: ClientProxy
+    ) { }
 
 
-  @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
-    return this.client.send('auth.login.user', loginUserDto).
-      pipe(
-        catchError(error => { throw new RpcException(error) })
-      );
-  }
+    @Public()
+    @Post('login')
+    async login(@Body() loginUserDto: LoginUserDto) {
+        return this.client.send('auth.login.user', loginUserDto).
+            pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
+    }
 
-  @Post('register')
-  async register(@Body() registerUserDto: RegisterUserDto) {
-    
-    return this.client.send('auth.register.user', registerUserDto).
-      pipe(
-        catchError(error => { throw new RpcException(error) })
-      );
-  }
+    @Post('register')
+    async register(@Body() registerUserDto: RegisterUserDto) {
 
-  @UseGuards(AuthGuard)
-  @Get('verify')
-  async verify(@Token() token: string ) {
-    
-    // const user = req['user'];
-    // const token = req['token'];
+        return this.client.send('auth.register.user', registerUserDto).
+            pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
+    }
 
-    return this.client.send('auth.verify.user', token).
-      pipe(
-        catchError(error => { throw new RpcException(error) })
-      );
-  }
+    @UseGuards(AuthGuard)
+    @Get('verify')
+    async verify(@Token() token: string) {
+
+        // const user = req['user'];
+        // const token = req['token'];
+
+        return this.client.send('auth.verify.user', token).
+            pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
+    }
 }
