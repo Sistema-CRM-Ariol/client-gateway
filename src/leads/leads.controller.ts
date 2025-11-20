@@ -23,7 +23,6 @@ export class LeadsController {
 
     @Post()
     create(@Body() createLeadDto: CreateLeadDto) {
-        console.log(createLeadDto);
         return this.client.send("leads.create", createLeadDto)
             .pipe(
                 catchError(error => { throw new RpcException(error) })
@@ -45,7 +44,7 @@ export class LeadsController {
     ) {
         return this.client.send("leads.changeStatus", { id, status })
             .pipe(
-                catchError(error => { console.log(error); throw new RpcException(error) })
+                catchError(error => { throw new RpcException(error) })
             );
     }
 

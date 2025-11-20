@@ -26,7 +26,6 @@ export class ClientsController {
 
     @Post()
     create(@Body() createClientDto: CreateClientDto) {
-        console.log(createClientDto);
         return this.clientsClient.send('createClient', createClientDto)
             .pipe(
                 catchError(error => { throw new RpcException(error) })
