@@ -48,5 +48,5 @@ export class CreateProviderDto {
 
     @IsOptional()
     @IsUUID('4', { message: 'providerCompanyId must be a valid UUID v4' })
-    providerCompanyId: string;
+    providerCompanyId?: string;
 }
