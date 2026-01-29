@@ -10,48 +10,48 @@ import { InventoriesGateway } from './inventories.gateway';
 
 @Injectable()
 export class InventoriesService {
-  constructor(
-    @Inject(NATS_SERVICE) private readonly client: ClientProxy,
-    private readonly gateway: InventoriesGateway,
-  ) { }
+    constructor(
+        @Inject(NATS_SERVICE) private readonly client: ClientProxy,
+        private readonly gateway: InventoriesGateway,
+    ) { }
 
-  async findAll(query: WarehouseFilterPaginatedDto) {
-    return firstValueFrom(
-      this.client.send('findAllInventories', query).pipe(
-        catchError((err) => {
-          throw new RpcException(err);
-        }),
-      ),
-    );
-  }
-
-  async create(dto: CreateInventoryDto) {
-    try {
-      const created = await firstValueFrom(
-        this.client.send('createInventory', dto)
-      );
-      
-      this.gateway.server.emit('inventoryCreated', created);
-      
-      return created;
-      
-    } catch (error) {
-      throw error;
+    async findAll(query: WarehouseFilterPaginatedDto) {
+        return firstValueFrom(
+            this.client.send('findAllInventories', query).pipe(
+                catchError((err) => {
+                    throw new RpcException(err);
+                }),
+            ),
+        );
     }
-  }
 
-  async update(id: string, updateInventoryDto: UpdateInventoryDto) {
-    const updated = await firstValueFrom(
-      this.client.send('updateInventory', { id, updateInventoryDto })
-    );
-    
-    this.gateway.server.emit('inventoryUpdated', updated);
-    return updated;
-  }
+    async create(dto: CreateInventoryDto) {
+        try {
+            const created = await firstValueFrom(
+                this.client.send('createInventory', dto)
+            );
 
-  async remove(id: number) {
-    const deleted = await firstValueFrom(this.client.send('removeInventory', id));
-    this.gateway.server.emit('inventoryDeleted', { id });
-    return deleted;
-  }
+            this.gateway.server.emit('inventoryCreated', created);
+
+            return created;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async update(id: string, updateInventoryDto: UpdateInventoryDto) {
+        const updated = await firstValueFrom(
+            this.client.send('updateInventory', { id, updateInventoryDto })
+        );
+
+        this.gateway.server.emit('inventoryUpdated', updated);
+        return updated;
+    }
+
+    async remove(id: number) {
+        const deleted = await firstValueFrom(this.client.send('removeInventory', id));
+        this.gateway.server.emit('inventoryDeleted', { id });
+        return deleted;
+    }
 }

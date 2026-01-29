@@ -1,30 +1,43 @@
-import { Controller, Get, Post, Body, Query, Param, Delete, Patch } from '@nestjs/common';
-import { InventoriesService } from './inventories.service';
-import { CreateInventoryDto } from './dto/create-inventory.dto';
-import { UpdateInventoryDto } from './dto/update-inventory.dto';
-import { WarehouseFilterPaginatedDto } from './dto/warehouse-filter-paginated.dto';
+import { Controller, Post, Body, Inject, Get, Query, UseGuards } from '@nestjs/common';
+import { NATS_SERVICE } from 'src/config';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { catchError } from 'rxjs';
+import { InventoryAdjustmentDto } from './dto/inventory-adjustment.dto';
+import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
+import { Permissions } from 'src/auth/decorators/permissions.decorator';
+import { User } from 'src/auth/decorators/user.decorator';
 
+
+@UseGuards(AuthGuard)
 @Controller('inventories')
 export class InventoriesController {
-  constructor(private readonly inventoriesService: InventoriesService) { }
+    constructor(
+        @Inject(NATS_SERVICE) private readonly natsClient: ClientProxy
+    ) { }
 
-  @Get()
-  findAll(@Query() query: WarehouseFilterPaginatedDto) {
-    return this.inventoriesService.findAll(query);
-  }
+    
+    @Post('adjustments')
+    @UseGuards(PermissionsGuard)
+    @Permissions('inventories:create')
+    async adjustments(@Body() inventoryAdjustmentDto: InventoryAdjustmentDto, @User() user) {
+        return this.natsClient.send('inventory.adjustments', { ...inventoryAdjustmentDto, userId: user.id, userName: user.name })
+            .pipe(
+                catchError(err => {
+                    throw new RpcException(err.message);
+                })
+            );
+    }
 
-  @Post()
-  create(@Body() createInventoryDto: CreateInventoryDto) {
-    return this.inventoriesService.create(createInventoryDto)
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInventoryDto: UpdateInventoryDto) {
-    return this.inventoriesService.update(id, updateInventoryDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.inventoriesService.remove(+id);
-  }
+    @Get('movements')
+    @UseGuards(PermissionsGuard)
+    @Permissions('inventories:read')
+    async movements(@Query() filterPaginationDto: FilterPaginationDto) {
+        return this.natsClient.send('inventory.movements', filterPaginationDto).pipe(
+            catchError(err => {
+                throw new RpcException(err.message);
+            })
+        );
+    }
 }
