@@ -7,7 +7,6 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 
-import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
 
@@ -16,7 +15,6 @@ import { Public } from 'src/auth/decorators/public.decorator';
 import { Permissions } from 'src/auth/decorators/permissions.decorator';
 
 @Controller('products')
-@UseGuards(AuthGuard)
 export class ProductsController {
 
     constructor(
@@ -50,8 +48,7 @@ export class ProductsController {
     }
 
     @Get(':id')
-    @UseGuards(PermissionsGuard)
-    @Permissions('products:readOne')
+    @Public()
     findOne(@Param('id') id: string) {
         return this.client.send("findOneProduct", id);
     }
