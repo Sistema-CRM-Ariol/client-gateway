@@ -8,41 +8,36 @@ import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
 @Controller('imports')
 export class ImportsController {
 
-  constructor(
-    @Inject(NATS_SERVICE) private readonly client: ClientProxy
-  ) { }
-
-  @Get()
-  findAll(@Query() filterPaginationDto: FilterPaginationDto) {
-    return this.client.send("findAllImports", filterPaginationDto)
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      )
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.client.send("findOneImport", id)
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      )
-  }
+    constructor(
+        @Inject(NATS_SERVICE) private readonly client: ClientProxy
+    ) { }
 
 
-  @Post()
-  create(@Body() createImportDto: CreateImportDto) {
-    return this.client.send("createImport", createImportDto)
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      )
-  }
+    @Get()
+    findAll(@Query() filterPaginationDto: FilterPaginationDto) {
+        return this.client.send("imports.findAll", filterPaginationDto)
+            .pipe(
+                catchError(error => {
+                    throw new RpcException(error)
+                })
+            )
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImportDto: any) {
-    return this.client.send("updateImport", {id, updateImportDto})
-      .pipe(
-        catchError(error => { throw new RpcException(error) })
-      )
-  }
+    @Get(':orderNumber')
+    findOne(@Param('orderNumber') orderNumber: string) {
+        return this.client.send("imports.findOne", orderNumber)
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
+    @Post()
+    create(@Body() createImportDto: CreateImportDto) {
+        return this.client.send("imports.create", createImportDto)
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
 
 }
