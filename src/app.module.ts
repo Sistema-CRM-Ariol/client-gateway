@@ -15,6 +15,7 @@ import { UsersModule } from './users/users.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { ProvidersModule } from './providers/providers.module';
 import { ProviderCompaniesModule } from './provider-companies/provider-companies.module';
+import { OutboundsModule } from './outbounds/outbounds.module';
 
 @Module({
     imports: [
@@ -33,7 +34,7 @@ import { ProviderCompaniesModule } from './provider-companies/provider-companies
         ProvidersModule,
         RolesModule, 
         UsersModule, 
-        WarehousesModule, 
+        WarehousesModule, OutboundsModule, 
     ],
 })
 export class AppModule { }

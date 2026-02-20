@@ -43,10 +43,10 @@ export class WarehousesController {
     }
 
     @Get(':id')
-    @UseGuards(PermissionsGuard)
-    @Permissions('warehouses:readOne')
+    // @UseGuards(PermissionsGuard)
+    // @Permissions('warehouses:read')
     findOne(@Param('id') id: string) {
-        return this.client.send("findOneWarehouse", id)
+        return this.client.send("warehouses.findOne", id)
             .pipe(
                 catchError(error => { throw new RpcException(error) })
             )
