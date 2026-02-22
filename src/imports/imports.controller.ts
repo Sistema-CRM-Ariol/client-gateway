@@ -23,6 +23,14 @@ export class ImportsController {
             )
     }
 
+    @Get('stats')
+    getStats() {
+        return this.client.send("imports.stats", {})
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
     @Get(':orderNumber')
     findOne(@Param('orderNumber') orderNumber: string) {
         return this.client.send("imports.findOne", orderNumber)

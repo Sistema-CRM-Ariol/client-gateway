@@ -29,6 +29,14 @@ export class LeadsController {
             );
     }
 
+    @Get('stats')
+    getStats() {
+        return this.client.send("leads.stats", {})
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
+    }
+
     @Get('seed')
     seed() {
         return this.client.send("leads.seed", {})

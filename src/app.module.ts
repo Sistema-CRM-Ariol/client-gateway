@@ -4,6 +4,7 @@ import { BrandsModule } from './brands/brands.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ClientsModule } from './clients/clients.module';
 import { CompaniesModule } from './companies/companies.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { ExportsModule } from './exports/exports.module';
 import { ImportsModule } from './imports/imports.module';
 import { InventoriesModule } from './inventories/inventories.module';
@@ -24,6 +25,7 @@ import { OutboundsModule } from './outbounds/outbounds.module';
         CategoriesModule, 
         ClientsModule, 
         CompaniesModule, 
+        DashboardModule,
         ExportsModule, 
         ImportsModule, 
         InventoriesModule, 

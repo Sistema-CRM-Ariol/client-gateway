@@ -15,6 +15,24 @@ export class OutboundsController {
     ) { }
 
 
+    // ─── Stats ──────────────────────────────────────────────────────
+
+    @Get('sales/stats')
+    getSalesStats() {
+        return this.client.send("outbounds.sales.stats", {})
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
+    @Get('quotations/stats')
+    getQuotationsStats() {
+        return this.client.send("outbounds.quotations.stats", {})
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
     // ─── Ventas ─────────────────────────────────────────────────────
 
     @Get('sales')

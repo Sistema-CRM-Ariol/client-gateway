@@ -13,6 +13,14 @@ export class UsersController {
     @Inject(NATS_SERVICE) private readonly client: ClientProxy
   ) { }
 
+  @Get('stats')
+  getStats() {
+    return this.client.send("users.stats", {})
+      .pipe(
+        catchError(error => { throw new RpcException(error) })
+      )
+  }
+
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.client.send("createUser", createUserDto)

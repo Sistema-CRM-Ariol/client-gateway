@@ -18,6 +18,14 @@ export class ProvidersController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @Get('stats')
+    getStats() {
+        return this.client.send("providers.stats", {})
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            )
+    }
+
     @Post()
     @UseGuards(PermissionsGuard)
     @Permissions('providers:create')
