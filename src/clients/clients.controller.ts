@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { catchError } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 
 import { NATS_SERVICE } from 'src/config';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -39,6 +39,14 @@ export class ClientsController {
                 catchError(error => {
                     throw new RpcException(error)
                 })
+            );
+    }
+
+    @Get(':id/analytics')
+    async getClientInsights(@Param('id') id: string) {
+        return this.clientsClient.send('outbounds.customers.analytics', { customerId: id })
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
             );
     }
 
