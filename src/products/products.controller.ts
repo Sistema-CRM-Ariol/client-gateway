@@ -13,8 +13,10 @@ import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { Permissions } from 'src/auth/decorators/permissions.decorator';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('products')
+@UseGuards(AuthGuard)
 export class ProductsController {
 
     constructor(
