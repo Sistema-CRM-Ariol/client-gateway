@@ -4,6 +4,7 @@ import { catchError } from 'rxjs';
 import { CreateImportDto } from './dto/create-import.dto';
 import { NATS_SERVICE } from 'src/config';
 import { FilterPaginationDto } from 'src/common/dto/filter-pagination.dto';
+import { ImportOrderStatus } from './types/import-ordes-status.type';
 
 @Controller('imports')
 export class ImportsController {
@@ -45,6 +46,14 @@ export class ImportsController {
             .pipe(
                 catchError(error => { throw new RpcException(error) })
             )
+    }
+
+    @Patch('change-status')
+    changeStatus(@Body() payload: { orderNumber: string; status: ImportOrderStatus }) {
+        return this.client.send('imports.changeStatus', payload)
+            .pipe(
+                catchError(error => { throw new RpcException(error) })
+            );
     }
 
 
